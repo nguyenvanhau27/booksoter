@@ -1,0 +1,21 @@
+package com.example.bookstore.payload;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.util.List;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class PaginationResponse implements Serializable {
+    private List<?> contents;
+    private boolean isFirst;
+    private boolean isLast;
+    private long totalPages;
+    private long totalItems;
+    private long limit;
+    private int no;
+}
