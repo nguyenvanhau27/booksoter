@@ -2,6 +2,7 @@ package com.example.bookstore.service;
 
 import com.example.bookstore.model.book.Book;
 import com.example.bookstore.payload.MessageResponse;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface AlbumService {
     MessageResponse create(List<MultipartFile> file, UUID bookId);
 //    MessageResponse create(MultipartFile file);
 //    MessageResponse create(UUID bookId);
+
 }

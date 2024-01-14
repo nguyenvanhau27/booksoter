@@ -1,7 +1,11 @@
 package com.example.bookstore.payload.book;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class BookRequest {
@@ -20,7 +24,8 @@ public class BookRequest {
     private String supplier;
     private String publishingCompany;
     private String form;
-    private int publishingYear;
+    @Temporal(TemporalType.DATE)
+    private Date publishingYear;
     private String language;
     private String weight;
     private String packagingSize;

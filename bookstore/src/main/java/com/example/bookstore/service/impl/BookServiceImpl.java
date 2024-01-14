@@ -2,7 +2,7 @@ package com.example.bookstore.service.impl;
 
 import com.example.bookstore.constant.ApiURL;
 import com.example.bookstore.constant.Constant;
-import com.example.bookstore.model.book.Album;
+import com.example.bookstore.mapper.BookMapper;
 import com.example.bookstore.model.book.Book;
 import com.example.bookstore.model.book.StatusBook;
 import com.example.bookstore.model.book.Topic;
@@ -10,6 +10,7 @@ import com.example.bookstore.model.enumm.StatusEnum;
 import com.example.bookstore.payload.*;
 import com.example.bookstore.payload.book.BookItemResponse;
 import com.example.bookstore.payload.book.BookRequest;
+import com.example.bookstore.payload.book.BookResponse;
 import com.example.bookstore.payload.book.FilterSearchBookRequest;
 import com.example.bookstore.repository.AlbumRepository;
 import com.example.bookstore.repository.BookRepository;
@@ -38,6 +39,8 @@ public class BookServiceImpl implements BookService {
     private StatusRepository statusRepository;
     @Autowired
     private AlbumRepository albumRepository;
+    @Autowired
+    private BookMapper bookMapper;
 
     private final String topicUpdating = "Updating";
     private final String statusDelete = "Delete";
@@ -185,25 +188,16 @@ public class BookServiceImpl implements BookService {
         String connect = " - ";
         for (Book setList : list){
             BookItemResponse item = new BookItemResponse();
-            item.setName(setList.getName());
-            item.setRating(setList.getRating());
 
-            if(Objects.equals(setList.getPriceMin(), setList.getPriceMax())){
-                item.setPrice(setList.getPriceMax().toString());
-            }else {
-                String price = setList.getPriceMin().toString() + connect + setList.getPriceMax().toString();
-                item.setPrice(price);
-            }
+            BookResponse bookResponse = this.bookMapper.toDTO(setList);
+            item.setBookResponse(bookResponse);
 
-            item.setDiscount(setList.getDiscountBook());
-            item.setStatus(setList.getStatus().getName());
-
-            Optional<Album> albumOptional = albumRepository.findByNameLikeOrFallback(setList.getId());
-
-            String imageName = albumOptional.map(Album::getName).orElse(null);
-            item.setImageName(imageName);
+            List<String> images = new ArrayList<>();
+            images = albumRepository.findAllByBook_Id(setList.getId());
+            item.setImageName(images);
 
             bookItemResponseList.add(item);
+
         }
 
         Page<BookItemResponse> page = convertListToPage(bookItemResponseList,
@@ -222,6 +216,61 @@ public class BookServiceImpl implements BookService {
 
         return new PageImpl<>(list.subList(start, end), PageRequest.of(pageNo, pageSize), list.size());
     }
+
+
+//    public PaginationResponse filter(FilterSearchBookRequest filterSearchBookRequest) {
+//
+//        Specification<Book> spec = BookSpecifications.filterAndSortByCriteria(filterSearchBookRequest.getName(),
+//                filterSearchBookRequest.getTopicName(),
+//                filterSearchBookRequest.getRating(),
+//                filterSearchBookRequest.getPriceRange(),
+//                filterSearchBookRequest.getSortOption(),
+//                filterSearchBookRequest.getAuthor(),
+//                filterSearchBookRequest.getStatus());
+//
+//        List<Book> list = bookRepository.findAll(spec);
+//
+//        List<BookItemResponse> bookItemResponseList = new ArrayList<>();
+//        String connect = " - ";
+//        for (Book setList : list){
+//            BookItemResponse item = new BookItemResponse();
+//            item.setName(setList.getName());
+//            item.setRating(setList.getRating());
+//
+//            if(Objects.equals(setList.getPriceMin(), setList.getPriceMax())){
+//                item.setPrice(setList.getPriceMax().toString());
+//            }else {
+//                String price = setList.getPriceMin().toString() + connect + setList.getPriceMax().toString();
+//                item.setPrice(price);
+//            }
+//
+//            item.setDiscount(setList.getDiscountBook());
+//            item.setStatus(setList.getStatus().getName());
+//
+//            Optional<Album> albumOptional = albumRepository.findByNameLikeOrFallback(setList.getId());
+//
+//            String imageName = albumOptional.map(Album::getName).orElse(null);
+//            item.setImageName(imageName);
+//
+//            bookItemResponseList.add(item);
+//        }
+//
+//        Page<BookItemResponse> page = convertListToPage(bookItemResponseList,
+//                filterSearchBookRequest.getNo(),
+//                filterSearchBookRequest.getLimit());
+//
+//        return new PaginationResponse(page.getContent(), page.isFirst(), page.isLast(),
+//                page.getTotalPages(),
+//                page.getTotalElements(), page.getSize(),
+//                page.getNumber());
+//    }
+//
+//    public static <T> Page<T> convertListToPage(List<T> list, int pageNo, int pageSize) {
+//        int start = pageNo * pageSize;
+//        int end = Math.min((start + pageSize), list.size());
+//
+//        return new PageImpl<>(list.subList(start, end), PageRequest.of(pageNo, pageSize), list.size());
+//    }
 
     @Override
     public List<String> findAuthor() {

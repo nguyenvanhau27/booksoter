@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,4 +16,8 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
     @Query("SELECT a FROM Album a WHERE a.book.id = :bookId " +
             "AND LOWER(a.name) LIKE LOWER(CONCAT('%', 's1', '%'))")
     Optional<Album> findByNameLikeOrFallback(@Param("bookId") UUID bookId);
+
+
+    @Query("SELECT al.name FROM Album al WHERE al.book.id = :bookId")
+    List<String> findAllByBook_Id(@Param("bookId") UUID bookId);
 }

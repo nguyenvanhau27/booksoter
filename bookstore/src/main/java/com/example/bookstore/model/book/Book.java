@@ -61,8 +61,9 @@ public class Book {
 
     private String form;
 
-    @Column(name = "publishing_year", columnDefinition = "YEAR")
-    private Integer publishingYear;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "publishing_year")
+    private Date publishingYear;
 
     private String language;
 
