@@ -2,6 +2,7 @@ package com.example.bookstore.config;
 
 import com.example.bookstore.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,21 +27,43 @@ public class SecurityConfiguration {
 
     private final UserService userService;
 
+    private final AuthEntryPointJwt authEntryPointJwt;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/admin").hasAnyAuthority("Role_Admin")
-                        .requestMatchers("/api/user").hasAnyAuthority("Role_User")
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        http.authorizeRequests(requests ->
+                        requests
+                                .requestMatchers("/api/auth/**","/api/material/**").permitAll()
+                        .requestMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/user/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                        .anyRequest().authenticated())
+                .csrf(AbstractHttpConfigurer::disable)
+
+                .sessionManagement(manager ->
+                        manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exceptionHandling ->
+                exceptionHandling.authenticationEntryPoint(authEntryPointJwt));
+
+
 
         return http.build();
+
+
+//        http.csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(request -> request
+//                        .requestMatchers("/api/auth/**").permitAll()
+//                        .requestMatchers("/api/admin").hasAnyAuthority("Role_Admin")
+//                        .requestMatchers("/api/user").hasAnyAuthority("Role_User")
+//                        .anyRequest().authenticated()
+//                )
+//                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .authenticationProvider(authenticationProvider())
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//        return http.build();
     }
 
 

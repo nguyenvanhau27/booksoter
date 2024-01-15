@@ -18,8 +18,6 @@ public class AuthenticationController {
 
     @Autowired
     private AuthenticationService authenticationService;
-    @Autowired
-    private BookService bookService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) throws Exception {
@@ -29,11 +27,6 @@ public class AuthenticationController {
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestBody SigninRequest signinRequest){
         return ResponseEntity.ok(authenticationService.signin(signinRequest));
-    }
-
-    @GetMapping("/Author")
-    public ResponseEntity<?> findAuthor() {
-        return ResponseEntity.ok(bookService.findAuthor());
     }
 
 

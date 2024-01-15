@@ -10,6 +10,7 @@ public class Constant {
     public static final String BOOK = "/book";
     public static final String USER = "/user";
     public static final String AUTH = "/auth";
+    public static final String MATERIAL = "/material";
     public static final String BOOK_NATURE = "/book_nature";
     public static final String ALBUM = "/album";
     public static final String WARE_HOUSE = "/warehouse";

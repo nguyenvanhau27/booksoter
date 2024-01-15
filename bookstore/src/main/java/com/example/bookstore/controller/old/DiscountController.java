@@ -1,4 +1,4 @@
-package com.example.bookstore.controller;
+package com.example.bookstore.controller.old;
 
 import com.example.bookstore.constant.ApiURL;
 import com.example.bookstore.payload.Discount.DiscountRequest;

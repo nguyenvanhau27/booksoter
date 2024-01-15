@@ -2,11 +2,11 @@ package com.example.bookstore.constant;
 
 public class ApiURL {
 
-    public static final String BOOK = Constant.API + Constant.ADMIN
-            + Constant.BOOK;
-    public static final String USER = Constant.API + Constant.USER;
-    public static final String AUTH = Constant.API + Constant.AUTH;
-    public static final String AlBUM = Constant.API + Constant.AUTH +  Constant.ALBUM;
+    /**
+     * Addmin URL
+     */
+    public static final String BOOK = Constant.API + Constant.ADMIN + Constant.BOOK;
+    public static final String MANAGER_USER = Constant.API + Constant.ADMIN + Constant.USER;
     public static final String BOOK_NATURE = Constant.API + Constant.ADMIN +  Constant.BOOK_NATURE;
     public static final String WARE_HOUSE = Constant.API + Constant.ADMIN +  Constant.WARE_HOUSE;
     public static final String COMMENT = Constant.API + Constant.ADMIN +  Constant.COMMENT;
@@ -18,6 +18,28 @@ public class ApiURL {
     public static final String ORDER = Constant.API + Constant.ADMIN +  Constant.ORDER;
     public static final String ORDER_DETAIL = Constant.API + Constant.ADMIN +  Constant.ORDER_DETAIL;
     public static final String PAYMENT = Constant.API + Constant.ADMIN +  Constant.PAYMENT;
+
+
+    /**
+     * User URL
+     */
+    public static final String USER = Constant.API + Constant.USER;
+
+    /**
+     * AUTH URL
+     */
+    public static final String AUTH = Constant.API + Constant.AUTH;
+
+    /**
+     * Material URL
+     */
+    public static final String MATERIAL = Constant.API + Constant.MATERIAL;
+
+
+
+    //checking
+    public static final String AlBUM = Constant.API + Constant.AUTH +  Constant.ALBUM;
+
     public static final String STATUS = Constant.API + Constant.USER +  Constant.STATUS;
     public static final String TOPIC = Constant.API + Constant.AUTH +  Constant.TOPIC;
 

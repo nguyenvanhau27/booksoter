@@ -1,11 +1,13 @@
-package com.example.bookstore.controller;
+package com.example.bookstore.controller.old;
 
 import com.example.bookstore.constant.ApiURL;
 import com.example.bookstore.payload.book.BookRequest;
 import com.example.bookstore.payload.book.FilterSearchBookRequest;
 import com.example.bookstore.service.BookService;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -48,7 +50,9 @@ public class BookController {
 
 
     @GetMapping("/filter")
-    public ResponseEntity<?> findAll(@RequestBody FilterSearchBookRequest filterSearchBookRequest){
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @PermitAll
+    public ResponseEntity<?> filter(@RequestBody FilterSearchBookRequest filterSearchBookRequest){
         return ResponseEntity.ok(bookService.filter(filterSearchBookRequest));
     }
 

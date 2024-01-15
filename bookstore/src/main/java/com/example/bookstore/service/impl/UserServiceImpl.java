@@ -1,7 +1,9 @@
 package com.example.bookstore.service.impl;
 
 import com.example.bookstore.constant.ApiURL;
+import com.example.bookstore.constant.AuthorizationRequestUser;
 import com.example.bookstore.constant.Constant;
+import com.example.bookstore.exception.ForbiddenException;
 import com.example.bookstore.mapper.UserMapper;
 import com.example.bookstore.model.user.User;
 import com.example.bookstore.payload.MessageResponse;
@@ -33,6 +35,8 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private AuthorizationRequestUser authorizationRequestUser;
 
     @Override
     public UserDetailsService userDetailsService() {
@@ -59,9 +63,22 @@ public class UserServiceImpl implements UserService {
         return this.userMapper.toDTO(userRepository.findById(id).orElseThrow());
     }
 
+    /**
+     * Update user
+     * @param id
+     * @param userRequest
+     * @return MessageResponse
+     */
     @Override
     public MessageResponse update(UUID id, UserRequest userRequest) {
 
+        // condition 1: if user then id login and id want update equal
+        // condition 2: if admin skip condition 1
+        if(!authorizationRequestUser.checkRoleAdmin(id)){ // admin = true
+            if(authorizationRequestUser.checkUserId(id)){
+                new ForbiddenException("Forbidden:" + id);
+            }
+        }
 
         User userOld = userRepository.findById(id).orElseThrow();
 

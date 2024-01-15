@@ -1,4 +1,4 @@
-package com.example.bookstore.controller;
+package com.example.bookstore.controller.old;
 
 import com.example.bookstore.constant.ApiURL;
 import com.example.bookstore.service.AlbumService;
@@ -35,25 +35,25 @@ public class AlbumController {
         return ResponseEntity.ok(albumService.create(files, bookId));
     }
 
-    @GetMapping("/display/{fileName}")  // view on web
-    public ResponseEntity<byte[]> displayFile(@PathVariable String fileName) throws IOException {
-        Resource resource = fileService.downloadFile(fileName);
-        String originalFilename = resource.getFilename().split("_", 2)[1];
-
-        Tika tika = new Tika();
-        String mediaType = tika.detect(originalFilename);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(mediaType));
-
-        headers.setContentDisposition(ContentDisposition.inline().filename(originalFilename).build());
-
-        InputStream inputStream = resource.getInputStream();
-        byte[] fileBytes = IOUtils.toByteArray(inputStream);
-        inputStream.close();
-
-        return new ResponseEntity<>(fileBytes, headers, HttpStatus.OK);
-    }
+//    @GetMapping("/display/{fileName}")  // view on web
+//    public ResponseEntity<byte[]> displayFile(@PathVariable String fileName) throws IOException {
+//        Resource resource = fileService.downloadFile(fileName);
+//        String originalFilename = resource.getFilename().split("_", 2)[1];
+//
+//        Tika tika = new Tika();
+//        String mediaType = tika.detect(originalFilename);
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.parseMediaType(mediaType));
+//
+//        headers.setContentDisposition(ContentDisposition.inline().filename(originalFilename).build());
+//
+//        InputStream inputStream = resource.getInputStream();
+//        byte[] fileBytes = IOUtils.toByteArray(inputStream);
+//        inputStream.close();
+//
+//        return new ResponseEntity<>(fileBytes, headers, HttpStatus.OK);
+//    }
 
 
 
