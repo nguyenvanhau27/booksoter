@@ -1,6 +1,8 @@
 package com.example.bookstore.config;
 
 import com.example.bookstore.exception.CustomAuthenticationException;
+import com.example.bookstore.model.user.User;
+import com.example.bookstore.repository.UserRepository;
 import com.example.bookstore.service.UserService;
 //import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.FilterChain;
@@ -9,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final UserService userService;
 
+    private final UserRepository userRepository;
     private static final String[] WHITE_LIST_URL = {
             "/api/auth/",
             "/api/material/"};
@@ -60,7 +64,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if(StringUtils.isNotEmpty(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null){
 
-            UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
+            var userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
+            var user = userRepository.findByEmail(userEmail).orElseThrow();
+
+            user.build(user); //update role
+
+            userDetails = user;
 
             if(jwtService.isTokenValid(jwt, userDetails)){
                 SecurityContext securityContext = SecurityContextHolder.createEmptyContext();

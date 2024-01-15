@@ -5,21 +5,35 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtServiceImpl implements JwtService{
 
     public static final String SECRET = "129321381274238RU29348813241294812048129412ASDAS9381283DAASDC123U8";
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(Authentication authentication, UserDetails userDetails) {
+
+        UserDetails userPrincipal = (UserDetails) authentication.getPrincipal() ;
+//        Claims claims = Jwts.claims().setSubject(userPrincipal.getUsername()).build();
+        var role = userPrincipal.getAuthorities().stream()
+                .map(item -> new SimpleGrantedAuthority(item.getAuthority())).collect(Collectors.toList());
+//        claims.put("role", role);
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role);
         return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000*60*60*24))

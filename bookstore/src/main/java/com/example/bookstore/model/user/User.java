@@ -51,20 +51,16 @@ public class User implements UserDetails {
 
 
 
-//    public static User build(User user) {
-//        List<Role> roles = new ArrayList<>();
-//        roles.add(user.getRole());
-//        List<GrantedAuthority> authorities = roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().toString()))
-//                .collect(Collectors.toList());
-//        return new User(user.getEmail(), user.getPassword(), authorities);
-//    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public void build(User user) {
         List<Role> roles = new ArrayList<>();
         roles.add(user.getRole());
         List<GrantedAuthority> authorities = roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().toString()))
                 .collect(Collectors.toList());
+        this.setAuthorities(authorities);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
 

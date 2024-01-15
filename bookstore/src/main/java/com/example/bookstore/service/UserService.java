@@ -21,6 +21,8 @@ public interface UserService {
 
     Boolean existsEmail(String email);
 
+
+
 //    MessageResponse delete(UUID id);
 
 //    MessageResponse block(UUID id);
