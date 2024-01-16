@@ -11,8 +11,13 @@ import java.util.List;
 public interface DiscountRepository extends JpaRepository<Discount,Long> {
 
 
+    @Query("SELECT d FROM Discount d WHERE LOWER(d.type) LIKE LOWER(CONCAT('%', :type, '%'))")
     List<Discount> findByType(String type);
+    @Query("SELECT d FROM Discount d WHERE LOWER(d.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+    List<Discount> findByName(String name);
 
     @Query("SELECT d FROM Discount d WHERE d.isDelete = false")
     List<Discount> findByIsDeleteNot();
+
+
 }

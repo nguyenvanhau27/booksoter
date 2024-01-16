@@ -8,9 +8,10 @@ import com.example.bookstore.payload.user.UserResponse;
 
 public interface AuthenticationService {
 
-    public UserResponse signup(SignupRequest signupRequest) throws Exception;
+    UserResponse signup(SignupRequest signupRequest) throws Exception;
 
-    public JwtAuthenticationResponse signin(SigninRequest signinRequest);
+    JwtAuthenticationResponse signin(SigninRequest signinRequest);
 
     MessageResponse changePassword(String newPassword);
+
 }

@@ -2,6 +2,7 @@ package com.example.bookstore.controller.user;
 
 import com.example.bookstore.constant.ApiURL;
 import com.example.bookstore.payload.user.UserRequest;
+import com.example.bookstore.service.AuthenticationService;
 import com.example.bookstore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +17,30 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private AuthenticationService authenticationService;
 
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> update (@PathVariable UUID id,
-                                     @RequestBody UserRequest userRequest) {
+    public ResponseEntity<?> update(@PathVariable UUID id,
+                                    @RequestBody UserRequest userRequest) {
         return ResponseEntity.ok(userService.update(id, userRequest));
     }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> findById(@PathVariable UUID id) {
+        return ResponseEntity.ok(userService.findById(id));
+    }
+
+    @GetMapping(value = "/")
+    public ResponseEntity<?> changPassword(@RequestParam String newPassword) {
+        return ResponseEntity.ok(authenticationService.changePassword(newPassword));
+    }
+
+    //delete
+
+    //block
+
 
 
 }

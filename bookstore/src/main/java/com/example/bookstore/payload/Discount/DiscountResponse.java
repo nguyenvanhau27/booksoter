@@ -11,8 +11,9 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DiscountRequest {
+public class DiscountResponse {
 
+    private long id;
     private String name;
     private Float percent;
     private Float totalDecrease;

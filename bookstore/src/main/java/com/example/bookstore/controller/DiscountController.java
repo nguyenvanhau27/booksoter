@@ -1,4 +1,4 @@
-package com.example.bookstore.controller.old;
+package com.example.bookstore.controller;
 
 import com.example.bookstore.constant.ApiURL;
 import com.example.bookstore.payload.Discount.DiscountRequest;
@@ -43,6 +43,11 @@ public class DiscountController {
     @GetMapping(value = "/findByType")
     private ResponseEntity<?> findByType(@RequestParam(name = "type", required = false) String type){
         return ResponseEntity.ok(discountService.findByType(type));
+    }
+
+    @GetMapping(value = "/findByName")
+    private ResponseEntity<?> findByName(@RequestParam(name = "name", required = false) String name){
+        return ResponseEntity.ok(discountService.findByName(name));
     }
 
 

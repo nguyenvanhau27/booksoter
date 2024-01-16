@@ -4,6 +4,8 @@ package com.example.bookstore.service.impl;
 import com.example.bookstore.config.JwtServiceImpl;
 import com.example.bookstore.constant.ApiURL;
 import com.example.bookstore.constant.Constant;
+import com.example.bookstore.exception.ForbiddenException;
+import com.example.bookstore.exception.NotFoundException;
 import com.example.bookstore.mapper.UserMapper;
 import com.example.bookstore.model.role.Role;
 import com.example.bookstore.model.enumm.RoleNameEnum;
@@ -100,17 +102,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     }
 
+
     @Override
     public MessageResponse changePassword(String newPassword) {
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        User user = userRepository.findByEmail(email).orElseThrow();
+        User user = userRepository.findByEmail(email).orElseThrow(() ->
+                new NotFoundException("Not found: " + email));
 
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
 
 
-        return new MessageResponse(HttpServletResponse.SC_OK, Constant.SUCCESS, ApiURL.AUTH);
+        return new MessageResponse(HttpServletResponse.SC_OK, Constant.SUCCESS, ApiURL.USER);
     }
+
+
 }

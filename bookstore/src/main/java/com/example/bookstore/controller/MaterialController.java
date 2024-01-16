@@ -3,6 +3,7 @@ package com.example.bookstore.controller;
 import com.example.bookstore.constant.ApiURL;
 import com.example.bookstore.payload.book.FilterSearchBookRequest;
 import com.example.bookstore.service.BookService;
+import com.example.bookstore.service.DiscountService;
 import com.example.bookstore.service.FileService;
 import com.example.bookstore.service.TopicService;
 import jakarta.annotation.security.PermitAll;
@@ -29,6 +30,8 @@ public class MaterialController {
     private TopicService topicService;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private DiscountService discountService;
 
 
     @GetMapping("/author")
@@ -67,5 +70,12 @@ public class MaterialController {
 
         return new ResponseEntity<>(fileBytes, headers, HttpStatus.OK);
     }
+
+
+    @GetMapping(value = "/discount/{id}")
+    private ResponseEntity<?> findById(@PathVariable long id){
+        return ResponseEntity.ok(discountService.findById(id));
+    }
+
 
 }

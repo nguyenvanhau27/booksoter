@@ -2,6 +2,7 @@ package com.example.bookstore.service;
 
 import com.example.bookstore.model.discount.Discount;
 import com.example.bookstore.payload.Discount.DiscountRequest;
+import com.example.bookstore.payload.Discount.DiscountResponse;
 import com.example.bookstore.payload.MessageResponse;
 
 import java.util.List;
@@ -14,11 +15,12 @@ public interface DiscountService {
 
     MessageResponse delete(long id);
 
-    List<Discount> findByType(String type);
+    List<DiscountResponse> findByType(String type);
+    List<DiscountResponse> findByName(String name);
 
-    List<Discount> findByIsDeleteNot();
+    List<DiscountResponse> findByIsDeleteNot();
 
-    List<Discount> findAll();
+    List<DiscountResponse> findAll();
 
-    Discount findById(long id);
+    DiscountResponse findById(long id);
 }
